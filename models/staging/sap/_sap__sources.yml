@@ -1,0 +1,40 @@
+version: 2
+
+sources:
+  - name: raw_sap
+    database: SAP_DB
+    schema: RAW
+    description: "Raw SAP ECC-style extracts, loaded via COPY INTO with MATCH_BY_COLUMN_NAME"
+    tables:
+      - name: VBAK
+        description: "Sales order header"
+      - name: VBAP
+        description: "Sales order item"
+      - name: VBRK
+        description: "Billing document header"
+      - name: VBRP
+        description: "Billing document item"
+      - name: EKKO
+        description: "Purchase order header"
+      - name: EKPO
+        description: "Purchase order item"
+      - name: RBKP
+        description: "Vendor invoice header"
+      - name: RSEG
+        description: "Vendor invoice item"
+      - name: CSKS
+        description: "Cost center master"
+      - name: CSKT
+        description: "Cost center text"
+      - name: MAKT
+        description: "Material description"
+      - name: MARA
+        description: "Material master"
+      - name: MARD
+        description: "Material stock"
+      - name: T001
+        description: "Company codes"
+      - name: T002
+        description: "Language keys"
+      - name: TCURR
+        description: "Exchange rates"

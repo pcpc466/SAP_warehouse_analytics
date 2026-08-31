@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: stg_vbak
+    description: "Sales order header, cleaned and typed"
+    columns:
+      - name: sales_doc_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_vbap
+    description: "Sales order item, cleaned and typed"
+    columns:
+      - name: sales_doc_id
+        tests:
+          - not_null
+      - name: material_number
+        tests:
+          - not_null
+
+  - name: stg_vbrk
+    description: "Billing document header, cleaned and typed"
+    columns:
+      - name: billing_doc_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_vbrp
+    description: "Billing document item, cleaned and typed"
+
+  - name: stg_ekko
+    description: "Purchase order header, cleaned and typed. po_created_on (BEDAT) is the correct field for cycle-time calcs -- changed_on (AEDAT) is last-changed date, not creation date."
+    columns:
+      - name: po_number
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_ekpo
+    description: "Purchase order item, cleaned and typed"
+
+  - name: stg_rbkp
+    description: "Vendor invoice header, cleaned and typed"
+    columns:
+      - name: invoice_doc_id
+        tests:
+          - not_null
+
+  - name: stg_rseg
+    description: "Vendor invoice item, cleaned and typed"
+
+  - name: stg_csks
+    description: "Cost center master"
+
+  - name: stg_cskt
+    description: "Cost center text"
+
+  - name: stg_makt
+    description: "Material description"
+
+  - name: stg_mara
+    description: "Material master"
+    columns:
+      - name: material_number
+        tests:
+          - not_null
+
+  - name: stg_mard
+    description: "Material stock"
+
+  - name: stg_t001
+    description: "Company codes"
+    columns:
+      - name: company_code
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_t002
+    description: "Language keys"
+
+  - name: stg_tcurr
+    description: "Exchange rates"

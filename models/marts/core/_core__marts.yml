@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Generated calendar spine, 2015-2030. Materialized as a table."
+    columns:
+      - name: date_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_material
+    description: "Raw material dimension (MARA + MAKT). Use dim_material_clean instead for anything user-facing."
+
+  - name: dim_material_clean
+    description: "Material dimension with test/placeholder records excluded. Join facts to THIS, not dim_material."
+    columns:
+      - name: material_number
+        tests:
+          - unique
+
+  - name: dim_vendor
+    description: "Degenerate dimension -- no vendor master (LFA1) in this dataset"
+
+  - name: dim_company_code
+    description: "Company codes (T001)"
+    columns:
+      - name: company_code
+        tests:
+          - unique
+
+  - name: dim_cost_center
+    description: "Cost centers (CSKS + CSKT)"
+
+  - name: dim_sales_org
+    description: "Degenerate dimension -- distinct sales orgs from VBAK/VBRK"
+
+  - name: dim_order_type
+    description: "Degenerate dimension -- distinct order types from VBAK"
+
+  - name: dim_currency
+    description: "Degenerate dimension -- distinct currencies across O2C/P2P docs"
+
+  - name: fct_sales_order_item
+    description: "Grain: one row per sales order line item (VBAK + VBAP)"
+    columns:
+      - name: sales_doc_id
+        tests:
+          - not_null
+
+  - name: fct_billing_item
+    description: "Grain: one row per billing line item (VBRK + VBRP)"
+
+  - name: fct_procurement_item
+    description: "Grain: one row per PO line item (EKKO + EKPO). client_id-scoped join -- PO numbers repeat across the 3 SAP clients in this dataset."
+    columns:
+      - name: po_number
+        tests:
+          - not_null
+
+  - name: fct_ap_invoice_item
+    description: "Grain: one row per vendor invoice line item (RBKP + RSEG)"
+
+  - name: vw_order_vs_billing
+    description: "Reconciliation: ordered vs. billed amount per sales order item"
+
+  - name: vw_po_vs_invoice
+    description: "Reconciliation: PO value vs. invoiced amount per PO item"
