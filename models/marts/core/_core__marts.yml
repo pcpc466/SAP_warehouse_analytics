@@ -14,20 +14,14 @@ models:
 
   - name: dim_material_clean
     description: "Material dimension with test/placeholder records excluded. Join facts to THIS, not dim_material."
-    columns:
-      - name: material_number
-        tests:
-          - unique
+    # Not tested for uniqueness -- material_number repeats across the 3 SAP clients in this dataset.
 
   - name: dim_vendor
     description: "Degenerate dimension -- no vendor master (LFA1) in this dataset"
 
   - name: dim_company_code
     description: "Company codes (T001)"
-    columns:
-      - name: company_code
-        tests:
-          - unique
+    # Not tested for uniqueness -- company_code repeats across the 3 SAP clients in this dataset.
 
   - name: dim_cost_center
     description: "Cost centers (CSKS + CSKT)"
@@ -42,14 +36,14 @@ models:
     description: "Degenerate dimension -- distinct currencies across O2C/P2P docs"
 
   - name: fct_sales_order_item
-    description: "Grain: one row per sales order line item (VBAK + VBAP)"
+    description: "Grain: one row per sales order line item (VBAK + VBAP). Note: joined on sales_doc_id only, not client-scoped -- known gap, see project notes."
     columns:
       - name: sales_doc_id
         tests:
           - not_null
 
   - name: fct_billing_item
-    description: "Grain: one row per billing line item (VBRK + VBRP)"
+    description: "Grain: one row per billing line item (VBRK + VBRP). Note: joined on billing_doc_id only, not client-scoped -- known gap, see project notes."
 
   - name: fct_procurement_item
     description: "Grain: one row per PO line item (EKKO + EKPO). client_id-scoped join -- PO numbers repeat across the 3 SAP clients in this dataset."
@@ -59,10 +53,10 @@ models:
           - not_null
 
   - name: fct_ap_invoice_item
-    description: "Grain: one row per vendor invoice line item (RBKP + RSEG)"
+    description: "Grain: one row per vendor invoice line item (RBKP + RSEG). client_id-scoped join."
 
   - name: vw_order_vs_billing
     description: "Reconciliation: ordered vs. billed amount per sales order item"
 
   - name: vw_po_vs_invoice
-    description: "Reconciliation: PO value vs. invoiced amount per PO item"
+    description: "Reconciliation: PO value vs. invoiced amount per PO item, client_id-scoped"
